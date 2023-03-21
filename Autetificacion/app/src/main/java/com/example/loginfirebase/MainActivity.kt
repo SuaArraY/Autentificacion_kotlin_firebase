@@ -1,5 +1,6 @@
 package com.example.loginfirebase
 
+import android.content.Intent
 import android.net.wifi.p2p.WifiP2pManager.ActionListener
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -39,13 +40,14 @@ signIn(txtemail.text.toString(), txtpass.text.toString())
             .addOnCompleteListener(this) { task ->
             if  (task.isSuccessful) {
                 val user = firebaseAuth.currentUser
-                Toast.makeText(baseContext, user?.uid.toString(), Toast.LENGTH_SHORT).show()
+                Toast.makeText(baseContext, "AUTENTIFICACION EXITOSA", Toast.LENGTH_SHORT).show()
                 //aqui debe de abrir el segundo activity
-
+                val  i = Intent( this, MainActivity2::class.java)
+                startActivity(i)
             }
             else
             {
-                Toast.makeText(baseContext, "datos incorrectos", Toast.LENGTH_SHORT).show()
+                Toast.makeText(baseContext, "CORREO O CONTRASEÑA INCORRECTOS", Toast.LENGTH_SHORT).show()
             }
 
         }
