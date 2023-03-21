@@ -25,11 +25,17 @@ class MainActivity : AppCompatActivity() {
         val btnIngresar : Button = findViewById(R.id.btnRegistrar)
         val txtemail : TextView = findViewById(R.id.txtCorreo)
         val txtpass: TextView = findViewById(R.id.txtContra)
+        val btnCrearCuenta : TextView = findViewById(R.id.btnCrearCuenta)
         firebaseAuth = Firebase.auth
         //funcionalidad del boton registrar
         btnIngresar.setOnClickListener()
         {
 signIn(txtemail.text.toString(), txtpass.text.toString())
+        }
+
+        btnCrearCuenta.setOnClickListener(){
+            val i = Intent(this, crearCuenta::class.java)
+            startActivity(i)
         }
 
     }

@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Login Firebase</string>
+    <string name="strCrearCuenta"><u>Crear Cuenta</u></string>
 </resources>
