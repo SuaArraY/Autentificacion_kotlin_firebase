@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "616631319424",
+    "project_id": "login-fb-e4a06",
+    "storage_bucket": "login-fb-e4a06.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:616631319424:android:d9477bcc28d5a8bde71f65",
+        "android_client_info": {
+          "package_name": "com.example.loginfirebase"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "616631319424-vvanoujag5lbdvga5norb9el4kjgbn1p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCwp75N7y2Eafm6EI3vQfWXOxrJ2SLv42w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "616631319424-vvanoujag5lbdvga5norb9el4kjgbn1p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
