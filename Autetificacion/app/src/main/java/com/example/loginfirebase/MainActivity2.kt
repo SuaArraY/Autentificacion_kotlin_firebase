@@ -3,12 +3,18 @@ package com.example.loginfirebase
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Button
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ktx.database
+
 
 class MainActivity2 : AppCompatActivity() {
 
@@ -17,9 +23,39 @@ class MainActivity2 : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main2)
+        
+
+        val btnBaseDatos : Button = findViewById(R.id.btnCrearBaseDatos)
+
+
+        btnBaseDatos.setOnClickListener(){
+            crearBaseDeDatos()
+
+        }
+        
         firebaseAuth = Firebase.auth
 
     }
+
+
+    private  fun crearBaseDeDatos(){
+
+        // Crea una instancia de Firebase Database
+        val database = Firebase.database
+
+        // Crea una referencia a la raíz de la base de datos
+        val myRef = database.reference
+
+        // Crea un objeto de tipo Producto con los datos que deseas almacenar
+        val producto = Producto("1234", "Descripción del producto", 10)
+
+        // Almacena el objeto en la base de datos bajo la referencia "productos"
+        myRef.child("productos").push().setValue(producto)
+
+    }
+
+
+    data class Producto(val codigo: String, val descripcion: String, val stock: Int)
 
     //para cuando retrocedamos no salga del menu principal
     //pasos
