@@ -12,6 +12,9 @@
         android:theme="@style/Theme.LoginFirebase"
         tools:targetApi="31">
         <activity
+            android:name=".RecordarPassActivity"
+            android:exported="false" />
+        <activity
             android:name=".crearCuenta"
             android:exported="false" />
         <activity

@@ -1,7 +1,6 @@
 package com.example.loginfirebase
 
 import android.content.Intent
-import android.net.wifi.p2p.WifiP2pManager.ActionListener
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -25,8 +24,13 @@ class MainActivity : AppCompatActivity() {
         val btnIngresar : Button = findViewById(R.id.btnRegistrar)
         val txtemail : TextView = findViewById(R.id.txtCorreo)
         val txtpass: TextView = findViewById(R.id.txtContra)
-        val btnCrearCuenta : TextView = findViewById(R.id.btnCrearCuenta)
+        val btnCrearCuenta : TextView = findViewById(R.id.btnCrearCuentaPrincipal)
+        val btnRecuperarContra: TextView = findViewById(R.id.btnRecuperarContra)
+
+
         firebaseAuth = Firebase.auth
+
+
         //funcionalidad del boton registrar
         btnIngresar.setOnClickListener()
         {
@@ -35,6 +39,12 @@ signIn(txtemail.text.toString(), txtpass.text.toString())
 
         btnCrearCuenta.setOnClickListener(){
             val i = Intent(this, crearCuenta::class.java)
+            startActivity(i)
+
+        }
+
+        btnRecuperarContra.setOnClickListener(){
+            val i = Intent(this, RecordarPassActivity::class.java)
             startActivity(i)
         }
 
