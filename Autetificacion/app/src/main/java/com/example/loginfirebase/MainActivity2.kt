@@ -1,8 +1,11 @@
 package com.example.loginfirebase
 
+import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -15,8 +18,11 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ktx.database
 import com.google.firebase.storage.FirebaseStorage
+import java.io.ByteArrayOutputStream
+import java.util.*
 
 
+@Suppress("DEPRECATION", "NAME_SHADOWING")
 class MainActivity2 : AppCompatActivity() {
 
     private  lateinit var firebaseAuth: FirebaseAuth
@@ -34,17 +40,47 @@ class MainActivity2 : AppCompatActivity() {
 
 
 
-
+        val btnCamara : Button = findViewById(R.id.btnCamara)
         val btnBaseDatos : Button = findViewById(R.id.btnCrearBaseDatos)
 
 
         btnBaseDatos.setOnClickListener(){
             crearBaseDeDatos()
+        }
 
+        btnCamara.setOnClickListener(){
+            dispatchTakePictureIntent()
         }
         
         firebaseAuth = Firebase.auth
 
+    }
+
+    @SuppressLint("QueryPermissionsNeeded")
+    private fun dispatchTakePictureIntent() {
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        if (intent.resolveActivity(packageManager) != null) {
+            startActivityForResult(intent, REQUEST_IMAGE_CAPTURE)
+        }
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            val imageBitmap = data?.extras?.get("data") as Bitmap
+            val baos = ByteArrayOutputStream()
+            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+            val data = baos.toByteArray()
+
+            val storageReference = storageRef.child("images/${UUID.randomUUID()}.jpg")
+            val uploadTask = storageReference.putBytes(data)
+            uploadTask.addOnFailureListener {
+                // Manejar la excepción si falla la carga de la imagen
+            }.addOnSuccessListener {
+                // Manejar el éxito de la carga de la imagen
+            }
+        }
     }
 
 
