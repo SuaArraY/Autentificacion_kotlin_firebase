@@ -8,8 +8,8 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="382dp"
-        android:layout_height="289dp"
+        android:layout_width="385dp"
+        android:layout_height="406dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.551"
@@ -22,10 +22,9 @@
         android:id="@+id/btnAbrirCamara"
         android:layout_width="285dp"
         android:layout_height="45dp"
-        android:layout_marginTop="76dp"
+        android:layout_marginTop="28dp"
         android:text="ABRIR CAMARA"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.507"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
@@ -39,4 +38,15 @@
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnAbrirCamara" />
+
+    <Button
+        android:id="@+id/btnEnviarFoto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="ENVIAR FOTO"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnGuardarFoto" />
 </androidx.constraintlayout.widget.ConstraintLayout>

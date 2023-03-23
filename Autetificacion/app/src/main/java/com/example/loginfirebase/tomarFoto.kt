@@ -24,6 +24,9 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -45,6 +48,7 @@ class tomarFoto : AppCompatActivity() {
 
         val btnCamara = findViewById<Button>(R.id.btnAbrirCamara)
         val btnGuardar = findViewById<Button>(R.id.btnGuardarFoto)
+        val btnEnviarFoto = findViewById<Button>(R.id.btnEnviarFoto)
 // Primero, crear un archivo temporal donde guardar la imagen
         val photoFile = createImageFile()
 
@@ -67,6 +71,10 @@ class tomarFoto : AppCompatActivity() {
             } else {
                 Toast.makeText(this, "No hay imagen para guardar", Toast.LENGTH_LONG).show()
             }
+        }
+
+        btnEnviarFoto.setOnClickListener(){
+            enviarFoto()
         }
 
     }
@@ -146,5 +154,36 @@ class tomarFoto : AppCompatActivity() {
         currentPhotoPath = imageFile.absolutePath
         return imageFile
     }
+
+    //funcion para enviar la foto
+    private fun enviarFoto() {
+        // Obtenemos la referencia al storage de Firebase
+        val storageRef = Firebase.storage.reference
+
+        // Creamos una referencia al archivo en el storage con un nombre único
+        val fileName = UUID.randomUUID().toString() + ".jpg"
+        val photoRef = storageRef.child("fotos/$fileName")
+        val imageView = findViewById<ImageView>(R.id.imageView)
+        // Obtenemos la imagen del ImageView
+        val bitmap = (imageView.drawable as BitmapDrawable).bitmap
+
+        // Convertimos el bitmap a un ByteArray comprimido en formato JPEG
+        val baos = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+        val data = baos.toByteArray()
+
+        // Subimos la imagen a Firebase Storage
+        val uploadTask = photoRef.putBytes(data)
+        uploadTask.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                // La imagen se subió correctamente
+                Toast.makeText(this, "Foto enviada correctamente", Toast.LENGTH_SHORT).show()
+            } else {
+                // Hubo un error al subir la imagen
+                Toast.makeText(this, "Error al enviar la foto", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
 
 }
