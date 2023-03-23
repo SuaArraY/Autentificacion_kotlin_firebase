@@ -33,7 +33,12 @@ class MainActivity2 : AppCompatActivity() {
 
         val btnCamara : Button = findViewById(R.id.btnCamara)
         val btnBaseDatos : Button = findViewById(R.id.btnCrearBaseDatos)
+        val btnCamra2 = findViewById<Button>(R.id.btnCamara2)
 
+        btnCamra2.setOnClickListener(){
+            val i = Intent(this, camara2::class.java)
+            startActivity(i)
+        }
 
         btnBaseDatos.setOnClickListener(){
             crearBaseDeDatos()
