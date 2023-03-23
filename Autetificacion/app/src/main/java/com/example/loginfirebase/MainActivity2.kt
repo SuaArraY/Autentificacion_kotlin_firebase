@@ -17,27 +17,18 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ktx.database
-import com.google.firebase.storage.FirebaseStorage
-import java.io.ByteArrayOutputStream
-import java.util.*
+
 
 
 @Suppress("DEPRECATION", "NAME_SHADOWING")
 class MainActivity2 : AppCompatActivity() {
 
     private  lateinit var firebaseAuth: FirebaseAuth
-    //variables para la camara
-    private val REQUEST_IMAGE_CAPTURE = 1
-    private val storageRef = FirebaseStorage.getInstance().reference
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main2)
-
-
-
-
-
 
 
         val btnCamara : Button = findViewById(R.id.btnCamara)
@@ -49,38 +40,12 @@ class MainActivity2 : AppCompatActivity() {
         }
 
         btnCamara.setOnClickListener(){
-            dispatchTakePictureIntent()
+            val i = Intent(this, tomarFoto::class.java)
+            startActivity(i)
         }
         
         firebaseAuth = Firebase.auth
 
-    }
-
-    @SuppressLint("QueryPermissionsNeeded")
-    private fun dispatchTakePictureIntent() {
-        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        if (intent.resolveActivity(packageManager) != null) {
-            startActivityForResult(intent, REQUEST_IMAGE_CAPTURE)
-        }
-    }
-
-    @Deprecated("Deprecated in Java")
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            val imageBitmap = data?.extras?.get("data") as Bitmap
-            val baos = ByteArrayOutputStream()
-            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-            val data = baos.toByteArray()
-
-            val storageReference = storageRef.child("images/${UUID.randomUUID()}.jpg")
-            val uploadTask = storageReference.putBytes(data)
-            uploadTask.addOnFailureListener {
-                // Manejar la excepción si falla la carga de la imagen
-            }.addOnSuccessListener {
-                // Manejar el éxito de la carga de la imagen
-            }
-        }
     }
 
 
