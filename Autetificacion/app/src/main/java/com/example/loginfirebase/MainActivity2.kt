@@ -14,16 +14,26 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ktx.database
+import com.google.firebase.storage.FirebaseStorage
 
 
 class MainActivity2 : AppCompatActivity() {
 
     private  lateinit var firebaseAuth: FirebaseAuth
+    //variables para la camara
+    private val REQUEST_IMAGE_CAPTURE = 1
+    private val storageRef = FirebaseStorage.getInstance().reference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main2)
-        
+
+
+
+
+
+
+
 
         val btnBaseDatos : Button = findViewById(R.id.btnCrearBaseDatos)
 
