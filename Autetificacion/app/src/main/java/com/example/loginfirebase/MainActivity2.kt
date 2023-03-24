@@ -30,12 +30,15 @@ class MainActivity2 : AppCompatActivity() {
     private lateinit var textViewUsername: TextView
 
     private lateinit var databaseRef: DatabaseReference
+    val database = FirebaseDatabase.getInstance()
+    val ref = database.getReference("datos")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main2)
         val textViewHora = findViewById<TextView>(R.id.txtSeleccionarFecha)
         val textViewHoraSeleccionada = findViewById<TextView>(R.id.txtFecha)
+        val us = findViewById<TextView>(R.id.textView2)
 
         textViewHora.setOnClickListener {
             val calendar = Calendar.getInstance()
@@ -76,7 +79,28 @@ class MainActivity2 : AppCompatActivity() {
             )
             datePickerDialog.show()
         }
+        val editTextOtroDato = findViewById<EditText>(R.id.txtRegistroActividad)
+        val botonGuardar = findViewById<Button>(R.id.btnGuardarActividad)
+        botonGuardar.setOnClickListener {
+            val use = us.text.toString()
+            val horaSeleccionada = textViewHoraSeleccionada.text.toString()
+            val fechaSeleccionada = textViewFechaSeleccionada.text.toString()
+            val otroDato = editTextOtroDato.text.toString()
 
+            val datos = HashMap<String, String>()
+            datos["usuario"] = use
+            datos["hora"] = horaSeleccionada
+            datos["fecha"] = fechaSeleccionada
+            datos["otroDato"] = otroDato
+
+            ref.push().setValue(datos)
+                .addOnSuccessListener {
+                    Toast.makeText(this, "Datos guardados en Firebase", Toast.LENGTH_SHORT).show()
+                }
+                .addOnFailureListener {
+                    Toast.makeText(this, "Error al guardar los datos en Firebase", Toast.LENGTH_SHORT).show()
+                }
+        }
 
 
         //val btnCamara: Button = findViewById(R.id.btnCamara)
