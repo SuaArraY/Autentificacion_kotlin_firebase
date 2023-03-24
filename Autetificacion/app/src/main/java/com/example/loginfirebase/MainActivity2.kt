@@ -1,18 +1,18 @@
 package com.example.loginfirebase
 
 import android.annotation.SuppressLint
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.content.Intent
 import android.graphics.Bitmap
+import android.icu.util.Calendar
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -34,11 +34,54 @@ class MainActivity2 : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main2)
+        val textViewHora = findViewById<TextView>(R.id.txtSeleccionarFecha)
+        val textViewHoraSeleccionada = findViewById<TextView>(R.id.txtFecha)
+
+        textViewHora.setOnClickListener {
+            val calendar = Calendar.getInstance()
+            val horaActual = calendar.get(Calendar.HOUR_OF_DAY)
+            val minutoActual = calendar.get(Calendar.MINUTE)
+
+            val timePickerDialog = TimePickerDialog(
+                this,
+                { _, horaSeleccionada, minutoSeleccionado ->
+                    val horaFormateada = String.format("%02d:%02d", horaSeleccionada, minutoSeleccionado)
+                    textViewHoraSeleccionada.text = horaFormateada
+                },
+                horaActual,
+                minutoActual,
+                true
+            )
+            timePickerDialog.show()
+        }
+
+        val textViewFecha = findViewById<TextView>(R.id.txtCalendario)
+        val textViewFechaSeleccionada = findViewById<TextView>(R.id.txtDia)
+
+        textViewFecha.setOnClickListener {
+            val calendar = Calendar.getInstance()
+            val anioActual = calendar.get(Calendar.YEAR)
+            val mesActual = calendar.get(Calendar.MONTH)
+            val diaActual = calendar.get(Calendar.DAY_OF_MONTH)
+
+            val datePickerDialog = DatePickerDialog(
+                this,
+                { _, anioSeleccionado, mesSeleccionado, diaSeleccionado ->
+                    val fechaFormateada = String.format("%02d/%02d/%04d", diaSeleccionado, mesSeleccionado + 1, anioSeleccionado)
+                    textViewFechaSeleccionada.text = fechaFormateada
+                },
+                anioActual,
+                mesActual,
+                diaActual
+            )
+            datePickerDialog.show()
+        }
 
 
-        val btnCamara: Button = findViewById(R.id.btnCamara)
-        val btnBaseDatos: Button = findViewById(R.id.btnCrearBaseDatos)
-        val btnCamra2 = findViewById<Button>(R.id.btnCamara2)
+
+        //val btnCamara: Button = findViewById(R.id.btnCamara)
+        //val btnBaseDatos: Button = findViewById(R.id.btnCrearBaseDatos)
+        //val btnCamra2 = findViewById<Button>(R.id.btnCamara2)
 
         /* btnCamra2.setOnClickListener(){
             val i = Intent(this, camara2::class.java)
@@ -74,9 +117,9 @@ class MainActivity2 : AppCompatActivity() {
             })
 
         //configurar la imagen de perfil del usuario
-        val imgProfile: ImageView = findViewById(R.id.imageView2)
-        val photoUrl = currentUser?.photoUrl
-         Glide.with(this).load(photoUrl).into(imgProfile)
+        //val imgProfile: ImageView = findViewById(R.id.imageView2)
+        //val photoUrl = currentUser?.photoUrl
+         //Glide.with(this).load(photoUrl).into(imgProfile)
 
     }
 
