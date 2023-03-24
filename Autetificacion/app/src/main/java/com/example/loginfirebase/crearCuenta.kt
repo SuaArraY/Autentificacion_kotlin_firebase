@@ -3,6 +3,7 @@ package com.example.loginfirebase
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Bitmap
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
@@ -21,6 +22,9 @@ class crearCuenta : AppCompatActivity() {
     //variable que conecta a Firebase
     private lateinit var firebaseAuth: FirebaseAuth
     private val REQUEST_IMAGE_CAPTURE = 1
+    private val PICK_IMAGE = 1
+    private val REQUEST_IMAGE_PICK = 2
+
     private lateinit var mImageView: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,8 +39,13 @@ class crearCuenta : AppCompatActivity() {
         val btnGaleria = findViewById<Button>(R.id.btnescogerImg)
          mImageView = findViewById(R.id.imgCrearCuenta)
 
+        btnGaleria.setOnClickListener(){
+            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
+            startActivityForResult(intent, REQUEST_IMAGE_PICK)
+        }
+
         btnFoto.setOnClickListener(){
-            dispatchTakePictureIntent()
+            dispatchTakePictureIntent(REQUEST_IMAGE_CAPTURE)
         }
 
 
@@ -75,10 +84,10 @@ crearAccount(txtCorreo.text.toString(),txtContra.text.toString())
     }
 
     @SuppressLint("QueryPermissionsNeeded")
-    private fun dispatchTakePictureIntent() {
+    private fun dispatchTakePictureIntent(requestCode: Int) {
         val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         if (takePictureIntent.resolveActivity(packageManager) != null) {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+            startActivityForResult(takePictureIntent, requestCode)
         }
     }
 
@@ -86,10 +95,24 @@ crearAccount(txtCorreo.text.toString(),txtContra.text.toString())
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            val extras = data?.extras
-            val imageBitmap = extras?.get("data") as Bitmap
-            mImageView.setImageBitmap(imageBitmap)
+        when (requestCode) {
+            REQUEST_IMAGE_CAPTURE -> {
+                if (resultCode == RESULT_OK) {
+                    val extras = data?.extras
+                    val imageBitmap = extras?.get("data") as Bitmap
+                    mImageView.setImageBitmap(imageBitmap)
+                }
+            }
+            REQUEST_IMAGE_PICK -> {
+                if (resultCode == RESULT_OK && data != null) {
+                    val uri: Uri = data.data ?: return
+                    val imageBitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
+                    mImageView.setImageBitmap(imageBitmap)
+                }
+            }
+            else -> {
+                // Handle other requestCode cases here, if any
+            }
         }
     }
 
