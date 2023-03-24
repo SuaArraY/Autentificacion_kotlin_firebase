@@ -40,6 +40,8 @@ class MainActivity2 : AppCompatActivity() {
         val textViewHoraSeleccionada = findViewById<TextView>(R.id.txtFecha)
         val us = findViewById<TextView>(R.id.textView2)
 
+
+
         textViewHora.setOnClickListener {
             val calendar = Calendar.getInstance()
             val horaActual = calendar.get(Calendar.HOUR_OF_DAY)
@@ -191,7 +193,9 @@ class MainActivity2 : AppCompatActivity() {
                 Toast.makeText(baseContext,"Buscar Info", Toast.LENGTH_LONG).show()
             }
             R.id.menu_listarActividad ->{
-                Toast.makeText(baseContext,"Buscar Info", Toast.LENGTH_LONG).show()
+                Toast.makeText(baseContext,"Cargando Historial", Toast.LENGTH_LONG).show()
+                val i = Intent(this, Historial::class.java)
+                startActivity(i)
             }
             R.id.menu_salir ->{
                 signOut()
