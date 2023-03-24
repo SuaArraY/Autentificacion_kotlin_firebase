@@ -3,6 +3,7 @@ package com.example.loginfirebase
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -13,8 +14,12 @@ import android.widget.TextView
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import org.w3c.dom.Text
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.ktx.storage
+import java.io.ByteArrayOutputStream
 
 @Suppress("DEPRECATION")
 class crearCuenta : AppCompatActivity() {
@@ -49,28 +54,63 @@ class crearCuenta : AppCompatActivity() {
         }
 
 
-        btnCrearCuentaNueva.setOnClickListener(){
+       btnCrearCuentaNueva.setOnClickListener(){
 
-            val pass1 = txtContra.text.toString()
-            val pass2 = txtContra2.text.toString()
+           val email = txtCorreo.text.toString()
+           val password = txtContra.text.toString()
+           val confirmPassword = txtContra2.text.toString()
+           val name = txtUser.text.toString()
 
-            if (pass1.equals(pass2)){
-crearAccount(txtCorreo.text.toString(),txtContra.text.toString())
-            }
-            else{
-                Toast.makeText(baseContext, "ERROR: las contraseñas no coinciden", Toast.LENGTH_LONG).show()
-                txtContra.requestFocus()
-                txtContra2.setText("")
-            }
+
+           if (password == confirmPassword) {
+               crearAccount(email, password, name)
+           } else {
+           Toast.makeText(this, "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show()
+       }
+
         }
-
-
-
 
         firebaseAuth = Firebase.auth
     }
 
-    private  fun crearAccount(email: String, password: String){
+
+    private fun crearAccount(email: String, password: String, name: String){
+        firebaseAuth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this){task ->
+                if (task.isSuccessful){
+                    val currentUser = firebaseAuth.currentUser
+                    val userId = currentUser?.uid
+                    if (userId != null) {
+                        val storageRef = Firebase.storage.reference.child("users/$userId/profile_picture.jpg")
+                        val bitmap = (mImageView.drawable as BitmapDrawable).bitmap
+                        val baos = ByteArrayOutputStream()
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+                        val data = baos.toByteArray()
+                        val uploadTask = storageRef.putBytes(data)
+                        uploadTask.addOnSuccessListener {
+                            val databaseRef = Firebase.database.reference.child("users").child(userId)
+                            val userMap = HashMap<String, Any>()
+                            userMap["name"] = name
+                            userMap["email"] = email
+                            userMap["profile_picture_url"] = it.metadata?.reference?.downloadUrl.toString()
+                            databaseRef.setValue(userMap).addOnSuccessListener {
+                                Toast.makeText(baseContext, "Cuenta creada correctamente", Toast.LENGTH_LONG).show()
+                            }.addOnFailureListener {
+                                Toast.makeText(baseContext, "Error al guardar datos en la base de datos: ${it.message}", Toast.LENGTH_LONG).show()
+                            }
+                        }.addOnFailureListener {
+                            Toast.makeText(baseContext, "Error al cargar imagen: ${it.message}", Toast.LENGTH_LONG).show()
+                        }
+                    }
+                }
+                else{
+                    Toast.makeText(baseContext,"Algo salio mal, ERROR crearAccount: " + task.exception, Toast.LENGTH_LONG).show()
+                }
+
+            }
+    }
+
+    /*private  fun crearAccount(email: String, password: String){
         firebaseAuth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this){task ->
                 if (task.isSuccessful){
@@ -81,7 +121,7 @@ crearAccount(txtCorreo.text.toString(),txtContra.text.toString())
                 }
 
             }
-    }
+    }*/
 
     @SuppressLint("QueryPermissionsNeeded")
     private fun dispatchTakePictureIntent(requestCode: Int) {
@@ -116,5 +156,26 @@ crearAccount(txtCorreo.text.toString(),txtContra.text.toString())
         }
     }
 
+    //para guardar en la base de datos
+    private fun guardarUsuarioEnFirebase(user: String, correo: String, imagen: String) {
+        // Referencia de la base de datos
+        val database = FirebaseDatabase.getInstance()
+        val myRef = database.getReference("usuarios")
+
+        // Crear un objeto Usuario con los datos
+        val usuario = User(user, correo, imagen)
+
+        // Guardar el objeto Usuario en la tabla "usuarios"
+        myRef.child(user).setValue(usuario).addOnSuccessListener {
+            Toast.makeText(baseContext, "Usuario guardado correctamente", Toast.LENGTH_LONG).show()
+        }.addOnFailureListener {
+            Toast.makeText(baseContext,"Algo salió mal al guardar el usuario, ERROR: " + it.message, Toast.LENGTH_LONG).show()
+        }
+    }
+    data class User(
+        val nombreUsuario: String,
+        val email: String,
+        val profileImageUrl: String?
+    )
 
 }
