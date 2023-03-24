@@ -93,7 +93,10 @@ class MainActivity2 : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId)
         {
-            R.id.menu_buscar ->{
+            R.id.menu_registrarActividad ->{
+                Toast.makeText(baseContext,"Buscar Info", Toast.LENGTH_LONG).show()
+            }
+            R.id.menu_listarActividad ->{
                 Toast.makeText(baseContext,"Buscar Info", Toast.LENGTH_LONG).show()
             }
             R.id.menu_salir ->{

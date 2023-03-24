@@ -49,8 +49,28 @@ signIn(txtemail.text.toString(), txtpass.text.toString())
         }
 
     }
+
+    private fun signIn(email: String, password: String) {
+        firebaseAuth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    val user = firebaseAuth.currentUser
+                    val name = user?.displayName
+                    val photoUrl = user?.photoUrl
+                    Toast.makeText(baseContext, "AUTENTIFICACION EXITOSA", Toast.LENGTH_SHORT).show()
+                    //aqui debe de abrir el segundo activity
+                    val i = Intent(this, MainActivity2::class.java)
+                    i.putExtra("name", name)
+                    i.putExtra("photoUrl", photoUrl)
+                    startActivity(i)
+                } else {
+                    Toast.makeText(baseContext, "CORREO O CONTRASEÑA INCORRECTOS", Toast.LENGTH_SHORT).show()
+                }
+            }
+    }
+
     //funciones
-    private  fun signIn(email: String, password: String)
+    /*private  fun signIn(email: String, password: String)
     {
         firebaseAuth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
@@ -67,5 +87,5 @@ signIn(txtemail.text.toString(), txtpass.text.toString())
             }
 
         }
-    }
+    }*/
 }
