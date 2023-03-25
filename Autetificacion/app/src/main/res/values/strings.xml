@@ -1,8 +1,8 @@
 <resources>
-    <string name="app_name">Login Firebase</string>
+    <string name="app_name">Agenda</string>
     <string name="strCrearCuenta"><u>Crear Cuenta</u></string>
     <string name="strRecuperarContra"><u>Recuperar Contraseña</u></string>
-    <string name="title_activity_contenedor_principal">contenedorPrincipal</string>
+    <string name="title_activity_contenedor_principal">Login Firebase</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>

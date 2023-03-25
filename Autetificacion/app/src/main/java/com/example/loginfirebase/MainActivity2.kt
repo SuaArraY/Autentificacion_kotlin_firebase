@@ -194,7 +194,7 @@ class MainActivity2 : AppCompatActivity() {
             }
             R.id.menu_listarActividad ->{
                 Toast.makeText(baseContext,"Cargando Historial", Toast.LENGTH_LONG).show()
-                val i = Intent(this, Historial::class.java)
+                val i = Intent(this, listaActividades::class.java)
                 startActivity(i)
             }
             R.id.menu_salir ->{
