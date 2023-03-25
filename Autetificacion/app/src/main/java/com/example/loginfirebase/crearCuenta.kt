@@ -8,6 +8,7 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
+import android.view.Window
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
@@ -34,8 +35,13 @@ class crearCuenta : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE) // deshabilitar la barra de título
         setContentView(R.layout.activity_crear_cuenta)
-        var txtUser : TextView = findViewById(R.id.txtUsuario)
+        // resto del código de tu actividad
+
+
+        setContentView(R.layout.activity_crear_cuenta)
+        val txtUser : TextView = findViewById(R.id.txtUsuario)
         val txtContra : TextView = findViewById(R.id.txtContraCC)
         val txtContra2 : TextView = findViewById(R.id.txtContraCC2)
         val txtCorreo: TextView = findViewById(R.id.txtCorreoCC)

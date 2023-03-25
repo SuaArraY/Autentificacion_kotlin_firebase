@@ -12,6 +12,7 @@ import android.provider.MediaStore
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.Window
 import android.widget.*
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
@@ -35,6 +36,11 @@ class MainActivity2 : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE) // deshabilitar la barra de título
+        setContentView(R.layout.activity_main2)
+        // resto del código de tu actividad
+
+
         setContentView(R.layout.activity_main2)
         val textViewHora = findViewById<TextView>(R.id.txtSeleccionarFecha)
         val textViewHoraSeleccionada = findViewById<TextView>(R.id.txtFecha)
